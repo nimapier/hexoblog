@@ -359,6 +359,37 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/21/blog19-1121/" >
+            
+                <span>cordova总结</span>
+        </a>
+        <div class="abstract-content">
+            cordova打包和热更新的问题前前后后花费了不少的时间，踩了很多的坑。
+之前我的电脑已经能够成功打包了，但是热更新没有去实验，这次准备尝试热更新的时候发现打包又失败了，于是又开始找问题。
+按照上一次的配置的操作，重新建立打包app之后，手动添加所有的插件，然后：
+
+修改qrscanner插件中的配置文件（解决重复申请camera权限报错的问题）
+添加安卓平台，修改Androidmanifest.xml配置文件（解决高版本安卓平台使用http请求出现networkErr的问题）
+开始打包，出现了依赖冲突的问题
+
+因为之前imagepicker这个插件一直装不上，和qrscanner插件又...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/21</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/08/30/blog19-8-30/" >
             
                 <span>使用valine给博客增加评论功能</span>
@@ -727,9 +758,20 @@ learncloud官网
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 5
+        Total : 6
         </div>
         <!-- search  -->
         
@@ -742,6 +784,11 @@ learncloud官网
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/21</span><a class="archive-post-title" href= "/2019/11/21/blog19-1121/" >cordova总结</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -806,11 +853,11 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="shares"><span class="iconfont-archer">&#xe60a;</span>shares</span>
+    
         <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
     
         <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
-    
-        <span class="sidebar-category-name" data-categories="shares"><span class="iconfont-archer">&#xe60a;</span>shares</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

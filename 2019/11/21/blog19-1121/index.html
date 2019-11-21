@@ -22,7 +22,7 @@
     <meta name="description" content="大蛙圆的个人博客网站，记录分享编程之路，开始前端为主的学习！！！">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>dawayuan · dawayuan&#39;s Blog</title>
+    <title>cordova总结 · dawayuan&#39;s Blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >dawayuan&#39;s blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">dawayuan</a>
+                <a href="#" class="post-name">cordova总结</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            dawayuan
+            cordova总结
             <!-- 404 -->
             
         </h1>
@@ -266,12 +266,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">6</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1k</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/06/01</span>
+                    <span class="post-intro-time">2019/11/21</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,15 +395,39 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h1 id="国际惯例"><a href="#国际惯例" class="headerlink" title="国际惯例"></a>国际惯例</h1><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2>
+        <p>cordova打包和热更新的问题前前后后花费了不少的时间，踩了很多的坑。</p>
+<p>之前我的电脑已经能够成功打包了，但是热更新没有去实验，这次准备尝试热更新的时候发现打包又失败了，于是又开始找问题。</p>
+<p>按照上一次的配置的操作，重新建立打包app之后，手动添加所有的插件，然后：</p>
+<ul>
+<li>修改qrscanner插件中的配置文件（解决重复申请camera权限报错的问题）</li>
+<li>添加安卓平台，修改<code>Androidmanifest.xml</code>配置文件（解决高版本安卓平台使用http请求出现networkErr的问题）</li>
+<li>开始打包，出现了依赖冲突的问题</li>
+</ul>
+<p>因为之前imagepicker这个插件一直装不上，和qrscanner插件又有冲突，所以我这次又把矛头对准了它。因为网络问题，这次我是下载后在本地安装的插件，卸载后打包……成功了！这个imagepicker果然不负众望，又背下了这个锅。打开他的GitHub网址，发现就在前几天有人发现了这个冲突的问题，并且最新版已经修复了这个问题</p>
+<p><a href="https://github.com/giantss/cordova-plugin-ImagePicker/issues/90" target="_blank" rel="noopener">(Android)改进：Glide库4.10.+导致android.support库和androidx冲突的问题</a></p>
+<p>下载最新版之后打包果然就成功了，接下来开始尝试热更新。同事给的文档说cordova9.0开始不支持热更新插件了，我没有查到相关的资料，只发现这个插件已经不再维护了。抱着少走弯路的想法，我把cordova版本降到了8.0.0，但是打包的时候又出现了新的问题。查阅了许多的资料依然没有解决，后来发现<code>cordova8.0.0</code>默认添加的安卓版本是7.0.0，添加平台的时候需要指定为8.0.0。</p>
+<p><code>cordova platform add android@~8.0.0</code></p>
+<p>接下来还有一个小问题，出现在打包的时候。debug打包没有问题，release打包的时候报错了，查阅资料后得到解决方案为在Android平台下的<code>build.gradle</code>中添加如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lintOptions &#123;</span><br><span class="line">      checkReleaseBuilds false//加上这一行</span><br><span class="line">      abortOnError false;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>打包的问题到这里就都解决了，接下来是热更新。安装好所需的插件后执行<code>cordova-hcp init</code>方法进行初始化，然后在<code>config.xml</code>中配置热更新的一些条件，接着只要执行<code>cordova-hcp build</code>就会在www目录下生成热更新所需的两个文件，将整个<code>www</code>文件夹下的东西放在服务器上，所有配置都没有问题的话，热更新就成功了。</p>
+<p>几个需要注意的地方是：</p>
+<ul>
+<li>热更新的地址要写对</li>
+<li><code>app.vue</code>中启动热更新相关代码的地址也要对应</li>
+<li>重新生成apk时也要执行<code>cordova-hcp build</code></li>
+</ul>
+<p>在解决了各种问题之后现在打包部署变得非常的简单，在vue项目中执行<code>npm run build</code>，将生成的<code>dist</code>文件整个复制放入<code>www</code>文件下，在cordova项目中执行<code>cordova-hcp build</code>，将<code>www</code>文件下的内容复制到堡垒机的项目对应的目录，打开app就完成热更新了。</p>
+<p>最后还有两个小插曲，第一个是在一次更新后正式环境的app出现了热更新紊乱的问题，表现为重复更新、更新内容混乱，原因就是在<code>app.vue</code>中热更新的url地址忘记修改了。所以当使用同一个vue项目打包两个cordova项目的时候，一定要在build前修改好所有的配置信息。第二个插曲是在安装软件时出现了签名冲突而导致的安装失败。起初以为问题在与打包时生成的签名文件命名冲突了，但是无论怎么改依然冲突。最后才发现是在创建cordova项目时，根目录下的<code>config.xml</code>文件包名重复了。<br>cordova总结的部分到此结束。</p>
+
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://yoursite.com">dawayuan</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/06/01/dawayuan/">http://yoursite.com/2019/06/01/dawayuan/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/06/01/dawayuan/">June 1st 2019, 2:27:04 pm</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/06/01/dawayuan/">July 1st 2019, 5:41:51 pm</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/11/21/blog19-1121/">http://yoursite.com/2019/11/21/blog19-1121/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/11/21/blog19-1121/">November 21st 2019, 9:50:45 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/11/21/blog19-1121/">November 21st 2019, 9:57:01 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -411,13 +435,13 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/07/01/hello-world/" title= "Hexo相关">
-                    <div class="nextTitle">Hexo相关</div>
-                </a>
-            
         </li>
         <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/30/blog19-8-30/" title= "使用valine给博客增加评论功能">
+                    <div class="prevTitle">使用valine给博客增加评论功能</div>
+                </a>
             
         </li>
     </ul>
@@ -551,7 +575,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#国际惯例"><span class="toc-number">1.</span> <span class="toc-text">国际惯例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hello-World"><span class="toc-number">1.1.</span> <span class="toc-text">Hello World</span></a></li></ol></li></ol>
+        
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
