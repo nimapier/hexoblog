@@ -266,7 +266,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1k</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.3k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -419,6 +419,26 @@ height:50vh;
 </ul>
 <p>在解决了各种问题之后现在打包部署变得非常的简单，在vue项目中执行<code>npm run build</code>，将生成的<code>dist</code>文件整个复制放入<code>www</code>文件下，在cordova项目中执行<code>cordova-hcp build</code>，将<code>www</code>文件下的内容复制到堡垒机的项目对应的目录，打开app就完成热更新了。</p>
 <p>最后还有两个小插曲，第一个是在一次更新后正式环境的app出现了热更新紊乱的问题，表现为重复更新、更新内容混乱，原因就是在<code>app.vue</code>中热更新的url地址忘记修改了。所以当使用同一个vue项目打包两个cordova项目的时候，一定要在build前修改好所有的配置信息。第二个插曲是在安装软件时出现了签名冲突而导致的安装失败。起初以为问题在与打包时生成的签名文件命名冲突了，但是无论怎么改依然冲突。最后才发现是在创建cordova项目时，根目录下的<code>config.xml</code>文件包名重复了。<br>cordova总结的部分到此结束。</p>
+<h4 id="2020-4-27更新"><a href="#2020-4-27更新" class="headerlink" title="2020.4.27更新"></a>2020.4.27更新</h4><p>cordova打包因网络原因（gradle、maven依赖下载慢）失败的解决方案：</p>
+<p>1、在ProjectBuilder.js文件中，将下载gradle的url路径修改为本地路径，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var distributionUrl = process.env[&apos;CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL&apos;] || &apos;../gradle-4.10.3-all.zip&apos;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/04/27/n1jlN6oIKBGbgd2.png" alt="blog2020-04-27.png"></p>
+<p>2、在gradle官网下载对应的gradle包，放到gradle目录下</p>
+<p><img src="https://i.loli.net/2020/04/27/l8os6mUgWjxTKRQ.png" alt="blog2020-04-24-2.png"></p>
+<p>3、全局搜索mavenCentral()，替换为阿里镜像地址：</p>
+<p><code>maven { url &quot;http://maven.aliyun.com/nexus/content/groups/public&quot; }</code></p>
+<p>字体文件引入失败的解决方案：</p>
+<p>字体文件引入失败是由css中使用url引入字体，在打包后路径错误所引起的。我的项目目录是这样的：</p>
+<p><img src="https://i.loli.net/2020/04/28/a1KslAQqzPSgC5X.png" alt="blog2020-04-28.png"></p>
+<p>font.css中引入了字体文件: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@font-face &#123;</span><br><span class="line">    font-family: &apos;TRENDS&apos;;</span><br><span class="line">    src: url(&apos;./trends.ttf&apos;);</span><br><span class="line">    font-weight: normal;</span><br><span class="line">    font-size: normal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打包后引用的地址为<code>font/trends.ttf</code>，也就是<code>www/css/fonts/trends.896ca9e.ttf</code>，这个路径是不正确的。</p>
+<p>解决方案为修改build/utils.js：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// Extract CSS when that option is specified</span><br><span class="line">    // (which is the case during production build)</span><br><span class="line">    if (options.extract) &#123;</span><br><span class="line">      return ExtractTextPlugin.extract(&#123;</span><br><span class="line">        use: loaders,</span><br><span class="line">        publicPath: &apos;../&apos;,//添加这一行</span><br><span class="line">        fallback: &apos;vue-style-loader&apos;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      return [&apos;vue-style-loader&apos;].concat(loaders)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>给cssloader配置单独的publicPath，这样在生产环境下css中引用的字体文件url就是<code>../font/trends,ttf</code>，是正确的了。</p>
 
     </article>
     <!-- license  -->
@@ -427,7 +447,7 @@ height:50vh;
             <p>原文作者：<a href="http://yoursite.com">dawayuan</a>
             <p>原文链接：<a href="http://yoursite.com/2019/11/21/blog19-1121/">http://yoursite.com/2019/11/21/blog19-1121/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/11/21/blog19-1121/">November 21st 2019, 9:50:45 pm</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/11/21/blog19-1121/">November 21st 2019, 9:57:01 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/11/21/blog19-1121/">May 6th 2020, 4:52:57 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -575,7 +595,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#2020-4-27更新"><span class="toc-number">1.</span> <span class="toc-text">2020.4.27更新</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -588,10 +608,6 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
