@@ -346,20 +346,19 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/19/first-md/" >
+        <a class="abstract-title" href = "/2020/06/08/blog20-6-8/" >
             
-                <span>实际开发中的一些问题整理</span>
+                <span>vue-cli2生成的项目打包配置相关问题</span>
         </a>
         <div class="abstract-content">
-            实际开发中的一些问题整理最近在公司的移动端项目中负责开发了几个模块，遇到的几个问题记录一下。项目使用的框架是vue配合vux。
-第一个问题是在mounted方法中发起请求，写了两个请求，第二个请求需要第一个请求的返回值来拼接请求字段。当时第一时间的反应就是在mouted方法中直接调用这两个方法，这当然是行不通的。说明自己对异步函数还是过于陌生了，实际使用的经验太少。
-项目中的请求方法对axios请求进行了一些封装，用法也比较相似，使用链式调用即可。
-12345678f1().then(res =&gt; &#123;    this.param = res.data    f2(    ...
+            vue-cli2生成的项目打包配置相关问题123456789build: &#123;    // Template for index.html    index: path.resolve(__dirname, &apos;../dist/index.html&apos;),    // Paths    assetsRoot: path.resolve(__dirname, &apos;../dist&apos;),    assetsSubDirectory: &apos;&apos;,    assetsPublicPath: &apos;&apos;,    ...
+
+这是使...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/19</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/06/08</span>
             </div>
             <!-- tags  -->
             
@@ -501,9 +500,40 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 4
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -514,8 +544,32 @@
     
     
     
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/08</span><a class="archive-post-title" href= "/2020/06/08/blog20-6-8/" >vue-cli2生成的项目打包配置相关问题</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/21</span><a class="archive-post-title" href= "/2019/11/21/blog19-1121/" >cordova总结</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2019/08/30/blog19-8-30/" >使用valine给博客增加评论功能</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -575,11 +629,13 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
+        <span class="sidebar-category-name" data-categories="vue"><span class="iconfont-archer">&#xe60a;</span>vue</span>
+    
         <span class="sidebar-category-name" data-categories="test"><span class="iconfont-archer">&#xe60a;</span>test</span>
     
         <span class="sidebar-category-name" data-categories="hexo"><span class="iconfont-archer">&#xe60a;</span>hexo</span>
     
-        <span class="sidebar-category-name" data-categories="share"><span class="iconfont-archer">&#xe60a;</span>share</span>
+        <span class="sidebar-category-name" data-categories="shares"><span class="iconfont-archer">&#xe60a;</span>shares</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
