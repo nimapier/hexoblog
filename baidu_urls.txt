@@ -1,6 +1,1 @@
 https://nimapier.github.io/2020/06/08/blog20-6-8/
-https://nimapier.github.io/2019/11/21/blog19-1121/
-https://nimapier.github.io/2019/08/30/blog19-8-30/
-https://nimapier.github.io/2019/08/19/first-md/
-https://nimapier.github.io/2019/07/05/migrate/
-https://nimapier.github.io/2019/07/01/hello-world/
